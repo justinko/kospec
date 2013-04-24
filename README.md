@@ -32,7 +32,6 @@ Spec.describe 'kospec' do
   it 'is awesome' do
     assert 5, eq(5)
     assert eq(5), 5 # argument order don't matter!
-    assert 5, 5 # default matcher is `eq`
     expect 5, 5 # I know ya'll love your aliases
     refute 'foo', eq('bar') # Y U SO NEGATIVE?
     assert 5, greater_than(4), message('5 is greater than 4 you scoundrel') # ad hoc messages

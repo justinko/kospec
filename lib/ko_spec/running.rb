@@ -1,5 +1,7 @@
 module KoSpec
   class Running
+    include ExampleGroup::DSL
+
     attr_reader :example_groups, :reporter
 
     def initialize
@@ -11,6 +13,8 @@ module KoSpec
       Dir["spec/{#{'**/*_spec.rb'}}"].sort.each do |file_path|
         load File.expand_path(file_path)
       end
+
+      example_groups.each &:run
     end
   end
 end
