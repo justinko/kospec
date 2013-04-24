@@ -2,6 +2,15 @@
 
 A Ruby Testing Framework
 
+## Highlights
+
+* No methods/pollution on `Object`
+* Matchers are shared between expectations and mocks
+* Concise non-wordy expectations
+* One gem/library
+* Option to fail-fast or not (per example)
+* Power of the matcher!
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -19,11 +28,16 @@ Or install it yourself as:
 ## Usage
 
 ```
-assert 5, eq(5)
-assert eq(5), 5 # argument order don't matter!
-assert 5, 5 # default matcher is `eq`
-expect 5, 5 # I know ya'll love your aliases
-refute 'foo', eq('bar') # Y U SO NEGATIVE?
+Spec.describe 'kospec' do
+  it 'is awesome' do
+    assert 5, eq(5)
+    assert eq(5), 5 # argument order don't matter!
+    assert 5, 5 # default matcher is `eq`
+    expect 5, 5 # I know ya'll love your aliases
+    refute 'foo', eq('bar') # Y U SO NEGATIVE?
+    assert 5, greater_than(4), message('5 is greater than 4 you scoundrel') # ad hoc messages
+  end
+end
 
 assert error(RuntimeError) do
   raise RuntimeError
