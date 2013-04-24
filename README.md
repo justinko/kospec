@@ -1,6 +1,6 @@
 # KoSpec
 
-TODO: Write a gem description
+A Ruby Testing Framework
 
 ## Installation
 
@@ -18,7 +18,35 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+assert 5, eq(5)
+assert eq(5), 5 # argument order don't matter!
+assert 5, 5 # default matcher is `eq`
+expect 5, 5 # I know ya'll love your aliases
+refute 'foo', eq('bar') # Y U SO NEGATIVE?
+
+assert error(RuntimeError) do
+  raise RuntimeError
+end
+
+assert 1, 2, 3, less_than(5) # matcher applied to each "actual" (1,2,3)
+```
+
+### Mocking
+
+```
+object = Object.new
+mock(object, :a_message)
+mock(object, :a_message).returns(true)
+mock(object, :a_message).with(kind_of(MyClass)).once
+
+stub(object, :foo).raises(MyError, 'an error message')
+
+double('foo') do |foo|
+  mock(foo, :bar).returns(5)
+  stub(foo, :baz)
+end
+```
 
 ## Contributing
 
