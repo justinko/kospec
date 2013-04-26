@@ -1,6 +1,6 @@
 module KoSpec
   class Example
-    include KoSpec::Matchers
+    include Matchers
 
     attr_reader :description
 
@@ -29,7 +29,7 @@ module KoSpec
     private
 
     def run_expectation(args, handler_name, location)
-      matchers = args.grep(KoSpec::Matcher)
+      matchers = args.grep(Matcher)
       matchers << truthy if matchers.empty?
 
       matchers.each do |matcher|
