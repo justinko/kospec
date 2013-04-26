@@ -12,8 +12,6 @@ Spec.describe 'example groups' do
       before { @foo = true }
 
       it 'works' do
-        puts 'foo'
-        puts @foo.inspect
         assert @foo
       end
 
@@ -21,9 +19,7 @@ Spec.describe 'example groups' do
         before { @bar = false }
 
         it 'works' do
-          puts 'bar'
-          puts @foo.inspect
-          puts @bar.inspect
+          assert @foo
           refute @bar
         end
       end

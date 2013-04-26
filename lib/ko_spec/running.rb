@@ -1,6 +1,7 @@
 module KoSpec
   class Running
     include ExampleGroup::DSL
+    include Hooks
 
     attr_reader :example_groups, :reporter
 
@@ -16,5 +17,7 @@ module KoSpec
 
       example_groups.each &:run
     end
+
+    def parent() nil end
   end
 end

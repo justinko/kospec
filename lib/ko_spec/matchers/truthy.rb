@@ -13,11 +13,11 @@ module KoSpec
         end
 
         def message
-          "#{@matcher.actual} is truthy"
+          "#{@matcher.actual.inspect} is truthy"
         end
 
         def failure_message
-          "#{@matcher.actual} is falsey"
+          "#{@matcher.actual.inspect} is falsey"
         end
       end
 
@@ -27,11 +27,11 @@ module KoSpec
         end
 
         def message
-          "#{@matcher.actual} is falsey"
+          "#{@matcher.actual.inspect} is falsey"
         end
 
         def failure_message
-          "#{@matcher.actual} is truthy"
+          "#{@matcher.actual.inspect} is truthy"
         end
       end
     end

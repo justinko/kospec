@@ -11,11 +11,11 @@ module KoSpec
         end
 
         def message
-          "#{@matcher.actual} == #{@matcher.expected}"
+          "#{@matcher.actual.inspect} == #{@matcher.expected.inspect}"
         end
 
         def failure_message
-          "#{@matcher.actual} is not equal to #{@matcher.expected}"
+          "#{@matcher.actual.inspect} is not equal to #{@matcher.expected.inspect}"
         end
       end
 
@@ -25,11 +25,11 @@ module KoSpec
         end
 
         def message
-          "#{@matcher.actual} != #{@matcher.expected}"
+          "#{@matcher.actual.inspect} != #{@matcher.expected.inspect}"
         end
 
         def failure_message
-          "#{@matcher.actual} is equal to #{@matcher.expected}"
+          "#{@matcher.actual.inspect} is equal to #{@matcher.expected.inspect}"
         end
       end
     end

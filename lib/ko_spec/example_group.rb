@@ -2,7 +2,7 @@ module KoSpec
   class ExampleGroup
     module DSL
       def describe(description, &block)
-        example_groups << ExampleGroup.new(description, &block)
+        example_groups << ExampleGroup.new(self, description, &block)
       end
 
       alias_method :context, :describe
@@ -11,11 +11,10 @@ module KoSpec
     include DSL
     include Hooks
 
-    attr_reader :description
+    attr_reader :parent, :description
 
-    def initialize(description, &block)
-      @description, @block = description, block
-      @hooks = Hash.new {|h, k| h[k] = [] }
+    def initialize(parent, description, &block)
+      @parent, @description, @block = parent, description, block
       @children, @examples = [], []
     end
 
@@ -33,8 +32,15 @@ module KoSpec
     alias_method :example, :it
     alias_method :specify, :it
 
-    def example_groups
-      @children
+    def example_groups() @children end
+
+    def parents
+      ary, parent_group = [], parent
+      while parent_group
+        ary.unshift parent_group
+        parent_group = parent_group.parent
+      end
+      ary
     end
   end
 end
