@@ -30,12 +30,7 @@ module KoSpec
 
     def run_expectation(args, handler_name)
       matchers = args.grep(KoSpec::Matcher)
-
-      if matchers.empty?
-        matchers << truthy if handler_name == :PositiveHandler
-        matchers << falsey if handler_name == :NegativeHandler
-      end
-
+      matchers << truthy if matchers.empty?
       matchers.each {|matcher| matcher.set_handler handler_name }
 
       actuals = args - matchers

@@ -5,7 +5,7 @@ module KoSpec
     extend Forwardable
 
     attr_accessor :actual
-    attr_reader :expected
+    attr_reader :expected, :handler
 
     def_delegators :@handler, :matches?, :message, :failure_message
 

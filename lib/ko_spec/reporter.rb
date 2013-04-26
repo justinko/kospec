@@ -13,7 +13,7 @@ module KoSpec
     end
 
     def matcher_failed(matcher)
-      puts matcher.failure_message
+      puts "********** #{matcher.failure_message} **********"
     end
   end
 end
