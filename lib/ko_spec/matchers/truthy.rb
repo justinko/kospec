@@ -5,7 +5,7 @@ module KoSpec
     end
 
     class Truthy < Matcher
-      def initialize; end
+      def initialize() end
 
       class PositiveHandler < Handler
         def matches?
