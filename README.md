@@ -35,29 +35,33 @@ Spec.describe 'kospec' do
     expect 5, 5 # I know ya'll love your aliases
     refute 'foo', eq('bar') # Y U SO NEGATIVE?
     assert 5, greater_than(4), message('5 is greater than 4 you scoundrel') # ad hoc messages
+
+    assert error(RuntimeError) do
+      raise RuntimeError
+    end
+
+    assert 1, 2, 3, less_than(5) # matcher applied to each "actual" (1,2,3)
   end
 end
-
-assert error(RuntimeError) do
-  raise RuntimeError
-end
-
-assert 1, 2, 3, less_than(5) # matcher applied to each "actual" (1,2,3)
 ```
 
 ### Mocking
 
 ```
-object = Object.new
-mock(object, :a_message)
-mock(object, :a_message).returns(true)
-mock(object, :a_message).with(kind_of(MyClass)).once
+Spec.describe 'mocks' do
+  it 'is awesome' do
+    object = Object.new
+    mock(object, :a_message)
+    mock(object, :a_message).returns(true)
+    mock(object, :a_message).with(kind_of(MyClass)).once
 
-stub(object, :foo).raises(MyError, 'an error message')
+    stub(object, :foo).raises(MyError, 'an error message')
 
-double('foo') do |foo|
-  mock(foo, :bar).returns(5)
-  stub(foo, :baz)
+    double('foo') do |foo|
+      mock(foo, :bar).returns(5)
+      stub(foo, :baz)
+    end
+  end
 end
 ```
 
