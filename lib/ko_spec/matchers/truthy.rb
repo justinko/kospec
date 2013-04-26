@@ -12,26 +12,26 @@ module KoSpec
           !!@matcher.actual
         end
 
-        def message
-          "#{@matcher.actual.inspect} is truthy"
+        def message(term = 'truthy')
+          "#{@matcher.actual.inspect} is #{term}"
         end
 
-        def failure_message
-          "#{@matcher.actual.inspect} is falsey"
+        def failure_message(term = 'falsey')
+          "#{@matcher.actual.inspect} is #{term}"
         end
       end
 
-      class NegativeHandler < Handler
+      class NegativeHandler < PositiveHandler
         def matches?
-          !@matcher.actual
+          not super
         end
 
         def message
-          "#{@matcher.actual.inspect} is falsey"
+          super 'falsey'
         end
 
         def failure_message
-          "#{@matcher.actual.inspect} is truthy"
+          super 'truthy'
         end
       end
     end

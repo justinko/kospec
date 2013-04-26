@@ -16,36 +16,54 @@ module KoSpec
       instance_eval &@block
     end
 
-    def assert(*args)
-      run_expectation args, :PositiveHandler, caller.first
+    def assert(*args, &block)
+      expectation = Expectation.new
+      expectation.handler_name = :PositiveHandler
+      expectation.location = caller.first
+      expectation.args = args
+      expectation.block = block
+      expectation.run
+      expectation
     end
 
     alias_method :expect, :assert
 
-    def refute(*args)
-      run_expectation args, :NegativeHandler, caller.first
+    def refute(*args, &block)
+      expectation = Expectation.new
+      expectation.handler_name = :NegativeHandler
+      expectation.location = caller.first
+      expectation.args = args
+      expectation.block = block
+      expectation.run
+      expectation
     end
 
-    private
+    class Expectation
+      include Matchers
 
-    def run_expectation(args, handler_name, location)
-      matchers = args.grep(Matcher)
-      matchers << truthy if matchers.empty?
+      attr_accessor :args, :block, :handler_name, :location
 
-      matchers.each do |matcher|
-        matcher.set_handler handler_name
-        matcher.location = location
-      end
+      def run
+        matchers = args.grep(Matcher)
+        matchers << truthy if matchers.empty?
 
-      actuals = args - matchers
-      actuals.each do |actual|
         matchers.each do |matcher|
-          matcher.actual = actual
+          matcher.handler = handler_name
+          matcher.location = location
+        end
 
-          if matcher.matches?
-            Spec.reporter.matcher_passed matcher
-          else
-            Spec.reporter.matcher_failed matcher
+        actuals = args - matchers
+        actuals << block if actuals.empty?
+
+        actuals.each do |actual|
+          matchers.each do |matcher|
+            matcher.actual = actual
+
+            if matcher.matches?
+              Spec.reporter.matcher_passed matcher
+            else
+              Spec.reporter.matcher_failed matcher
+            end
           end
         end
       end

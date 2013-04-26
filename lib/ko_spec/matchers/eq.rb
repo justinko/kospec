@@ -10,26 +10,26 @@ module KoSpec
           @matcher.actual == @matcher.expected
         end
 
-        def message
-          "#{@matcher.actual.inspect} == #{@matcher.expected.inspect}"
+        def message(separator = '==')
+          "#{@matcher.actual.inspect} #{separator} #{@matcher.expected.inspect}"
         end
 
-        def failure_message
-          "#{@matcher.actual.inspect} is not equal to #{@matcher.expected.inspect}"
+        def failure_message(separator = 'is not')
+          "#{@matcher.actual.inspect} #{separator} equal to #{@matcher.expected.inspect}"
         end
       end
 
-      class NegativeHandler < Handler
+      class NegativeHandler < PositiveHandler
         def matches?
-          @matcher.actual != @matcher.expected
+          not super
         end
 
         def message
-          "#{@matcher.actual.inspect} != #{@matcher.expected.inspect}"
+          super '!='
         end
 
         def failure_message
-          "#{@matcher.actual.inspect} is equal to #{@matcher.expected.inspect}"
+          super 'is'
         end
       end
     end
