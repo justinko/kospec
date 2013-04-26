@@ -36,7 +36,7 @@ Spec.describe 'kospec' do
     refute 'foo', eq('bar') # Y U SO NEGATIVE?
     assert 5, greater_than(4), message('5 is greater than 4 you scoundrel') # ad hoc messages
 
-    assert error(RuntimeError) do
+    assert error(RuntimeError.new) do
       raise RuntimeError
     end
 
