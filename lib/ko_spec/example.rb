@@ -1,6 +1,7 @@
 module KoSpec
   class Example
     include Matchers
+    include Mocking::DSL
 
     attr_reader :description
 
@@ -11,9 +12,10 @@ module KoSpec
     def run
       Spec.reporter.example_started self
       @group.parents.push(@group).each do |group|
-        group.run_hooks(:before, self)
+        group.hooks.run(:before, self)
       end
       instance_eval &@block
+      mocks.verify
     end
 
     def assert(*args, &block)

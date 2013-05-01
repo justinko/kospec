@@ -1,13 +1,12 @@
 module KoSpec
   class Running
     include ExampleGroup::DSL
-    include Hooks
+    include Hooks::DSL
 
     attr_reader :example_groups, :reporter
 
     def initialize
-      @example_groups = []
-      @reporter = Reporter.new
+      @example_groups, @reporter = [], Reporter.new
     end
 
     def start

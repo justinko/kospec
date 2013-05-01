@@ -2,14 +2,16 @@ module KoSpec
   class ExampleGroup
     module DSL
       def describe(description, &block)
-        example_groups << ExampleGroup.new(self, description, &block)
+        example_group = ExampleGroup.new(self, description, &block)
+        example_groups << example_group
+        example_group
       end
 
       alias_method :context, :describe
     end
 
     include DSL
-    include Hooks
+    include Hooks::DSL
 
     attr_reader :parent, :description
 
