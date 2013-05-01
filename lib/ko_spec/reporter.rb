@@ -18,5 +18,16 @@ module KoSpec
       puts matcher.location
       puts
     end
+
+    def mock_passed(mock)
+      puts "Mock passed: `#{mock.message}` called on #{mock.receiver}"
+    end
+
+    def mock_failed(mock)
+      puts
+      puts "****** Mock failed: `#{mock.message}` not called on #{mock.receiver} ******"
+      puts mock.location
+      puts
+    end
   end
 end
