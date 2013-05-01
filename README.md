@@ -8,7 +8,7 @@ A Ruby Testing Framework
 * Matchers are shared between expectations and mocks
 * Concise non-wordy expectations
 * One gem/library
-* Option to fail-fast or not (per example)
+* Option to fail-fast or not (per example, à la Jasmine)
 * Power of the matcher!
 
 ## Installation
