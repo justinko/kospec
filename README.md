@@ -27,7 +27,7 @@ Or install it yourself as:
 
 ## Usage
 
-```
+```ruby
 Spec.describe 'kospec' do
   it 'is awesome' do
     assert 5, eq(5)
@@ -47,7 +47,7 @@ end
 
 ### Mocking
 
-```
+```ruby
 Spec.describe 'mocks' do
   it 'is awesome' do
     object = Object.new
