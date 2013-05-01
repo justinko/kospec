@@ -13,11 +13,11 @@ module KoSpec
     include DSL
     include Hooks::DSL
 
-    attr_reader :parent, :description
+    attr_reader :parent, :description, :lets
 
     def initialize(parent, description, &block)
       @parent, @description, @block = parent, description, block
-      @children, @examples = [], []
+      @children, @examples, @lets = [], [], {}
     end
 
     def run
@@ -43,6 +43,22 @@ module KoSpec
         parent_group = parent_group.parent
       end
       ary
+    end
+
+    def let(name, &block)
+      @lets[name] = let = Let.new(block)
+      define_singleton_method(name) { let.value }
+      let
+    end
+
+    class Let
+      def initialize(block)
+        @block = block
+      end
+
+      def value
+        @value ||= @block.call
+      end
     end
   end
 end

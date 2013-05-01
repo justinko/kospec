@@ -18,5 +18,6 @@ module KoSpec
     end
 
     def parent() nil end
+    def lets() [] end
   end
 end

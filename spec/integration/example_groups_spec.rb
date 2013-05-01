@@ -7,6 +7,28 @@ Spec.describe 'example groups' do
     end
   end
 
+  describe '#let' do
+    let(:object) { Object.new }
+
+    it 'works' do
+      assert object, equal(object)
+    end
+
+    describe 'nested' do
+      it 'works' do
+        assert object
+      end
+    end
+
+    describe 'overridden' do
+      let(:object) { 1 }
+
+      it 'works' do
+        assert object, eq(1)
+      end
+    end
+  end
+
   describe 'hooks' do
     describe '#before' do
       before { @foo = true }

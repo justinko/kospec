@@ -13,6 +13,9 @@ module KoSpec
       Spec.reporter.example_started self
       @group.parents.push(@group).each do |group|
         group.hooks.run(:before, self)
+        group.lets.each do |name, let|
+          define_singleton_method(name) { let.value }
+        end
       end
       instance_eval &@block
       mocks.verify
