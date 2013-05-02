@@ -3,10 +3,11 @@ module KoSpec
     include ExampleGroup::DSL
     include Hooks::DSL
 
-    attr_reader :example_groups, :reporter
+    attr_reader :example_groups, :reporter, :lets
 
     def initialize
       @example_groups, @reporter = [], Reporter.new
+      @lets = ExampleGroup::Lets.new
     end
 
     def start
@@ -18,6 +19,5 @@ module KoSpec
     end
 
     def parent() nil end
-    def lets() [] end
   end
 end

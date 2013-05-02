@@ -1,5 +1,3 @@
-require 'forwardable'
-
 module KoSpec
   class Matcher
     extend Forwardable

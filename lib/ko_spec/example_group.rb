@@ -17,7 +17,7 @@ module KoSpec
 
     def initialize(parent, description, &block)
       @parent, @description, @block = parent, description, block
-      @children, @examples, @lets = [], [], {}
+      @children, @examples, @lets = [], [], Lets.new
     end
 
     def run
@@ -49,6 +49,22 @@ module KoSpec
       @lets[name] = let = Let.new(block)
       define_singleton_method(name) { let.value }
       let
+    end
+
+    class Lets
+      extend Forwardable
+
+      def_delegators :@lets, :each, :[], :[]=
+
+      def initialize
+        @lets = {}
+      end
+
+      def apply(example)
+        @lets.each do |name, let|
+          example.define_singleton_method(name) { let.value }
+        end
+      end
     end
 
     class Let

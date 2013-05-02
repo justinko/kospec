@@ -1,3 +1,5 @@
+require 'forwardable'
+
 require 'ko_spec/matcher'
 require 'ko_spec/matchers'
 require 'ko_spec/hooks'
