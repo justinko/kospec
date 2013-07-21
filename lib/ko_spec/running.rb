@@ -3,11 +3,10 @@ module KoSpec
     include ExampleGroup::DSL
     include Hooks::DSL
 
-    attr_reader :example_groups, :reporter, :lets
+    attr_reader :example_groups, :reporter
 
     def initialize
       @example_groups, @reporter = [], Reporter.new
-      @lets = ExampleGroup::Lets.new
     end
 
     def start

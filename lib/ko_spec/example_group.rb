@@ -13,12 +13,12 @@ module KoSpec
     include DSL
     include Hooks::DSL
 
-    attr_reader :parent, :children, :description, :lets
+    attr_reader :parent, :children, :description
     alias_method :example_groups, :children
 
     def initialize(parent, description, &block)
       @parent, @description, @block = parent, description, block
-      @children, @examples, @lets = [], [], Lets.new
+      @children, @examples = [], []
     end
 
     def run
@@ -42,38 +42,6 @@ module KoSpec
         parent_group = parent_group.parent
       end
       ary
-    end
-
-    def let(name, &block)
-      @lets[name] = let = Let.new(block)
-      define_singleton_method(name) { let.value }
-      let
-    end
-
-    class Lets
-      extend Forwardable
-
-      def_delegators :@lets, :each, :[], :[]=
-
-      def initialize
-        @lets = {}
-      end
-
-      def apply(example)
-        @lets.each do |name, let|
-          example.define_singleton_method(name) { let.value }
-        end
-      end
-    end
-
-    class Let
-      def initialize(block)
-        @block = block
-      end
-
-      def value
-        @value ||= @block.call
-      end
     end
   end
 end
