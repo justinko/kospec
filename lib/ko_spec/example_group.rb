@@ -43,5 +43,9 @@ module KoSpec
       end
       ary
     end
+
+    def position
+      parents.size - 1
+    end
   end
 end

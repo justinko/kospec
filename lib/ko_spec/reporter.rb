@@ -1,15 +1,15 @@
 module KoSpec
   class Reporter
     def example_group_started(example_group)
-      puts "Example group started: #{example_group.description}"
+      puts '  ' * example_group.position + example_group.description
     end
 
     def example_started(example)
-      puts "Example started: #{example.description}"
+      puts '  ' * example.position + example.description
     end
 
     def matcher_passed(matcher)
-      puts matcher.message
+      puts '  ' * matcher.position + matcher.message
     end
 
     def matcher_failed(matcher)
@@ -20,7 +20,7 @@ module KoSpec
     end
 
     def mock_passed(mock)
-      puts "Mock passed: `#{mock.message}` called on #{mock.receiver}"
+      #puts "Mock passed: `#{mock.message}` called on #{mock.receiver}"
     end
 
     def mock_failed(mock)

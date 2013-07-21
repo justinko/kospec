@@ -18,8 +18,12 @@ module KoSpec
       mocks.verify
     end
 
+    def position
+      @group.position.next
+    end
+
     def assert(*args, &block)
-      expectation = Expectation.new
+      expectation = Expectation.new(self)
       expectation.handler_name = :PositiveHandler
       expectation.location = caller.first
       expectation.args = args
@@ -31,7 +35,7 @@ module KoSpec
     alias_method :expect, :assert
 
     def refute(*args, &block)
-      expectation = Expectation.new
+      expectation = Expectation.new(self)
       expectation.handler_name = :NegativeHandler
       expectation.location = caller.first
       expectation.args = args
@@ -45,13 +49,21 @@ module KoSpec
 
       attr_accessor :args, :block, :handler_name, :location
 
+      def initialize(example)
+        @example = example
+      end
+
+      def position
+        @example.position.next
+      end
+
       def run
         matchers = args.grep(Matcher)
         matchers << truthy if matchers.empty?
 
         matchers.each do |matcher|
           matcher.handler = handler_name
-          matcher.location = location
+          matcher.expectation = self
         end
 
         actuals = args - matchers

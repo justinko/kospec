@@ -2,10 +2,11 @@ module KoSpec
   class Matcher
     extend Forwardable
 
-    attr_accessor :actual, :location
+    attr_accessor :actual, :expectation
     attr_reader :expected
 
     def_delegators :@handler, :matches?, :message, :failure_message
+    def_delegators :expectation, :position, :location
 
     def initialize(expected)
       @expected = expected
