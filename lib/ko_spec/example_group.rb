@@ -13,7 +13,8 @@ module KoSpec
     include DSL
     include Hooks::DSL
 
-    attr_reader :parent, :description, :lets
+    attr_reader :parent, :children, :description, :lets
+    alias_method :example_groups, :children
 
     def initialize(parent, description, &block)
       @parent, @description, @block = parent, description, block
@@ -33,8 +34,6 @@ module KoSpec
 
     alias_method :example, :it
     alias_method :specify, :it
-
-    def example_groups() @children end
 
     def parents
       ary, parent_group = [], parent
