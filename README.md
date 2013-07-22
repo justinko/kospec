@@ -10,6 +10,7 @@ A Ruby Testing Framework
 * One gem/library
 * Option to fail-fast or not (per example, à la Jasmine)
 * Power of the matcher!
+* Concurrency by default
 
 ## Installation
 
