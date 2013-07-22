@@ -17,19 +17,22 @@ module KoSpec
     alias_method :example_groups, :children
 
     def initialize(parent, description, &block)
-      @parent, @description, @block = parent, description, block
+      @parent, @description = parent, description
       @children, @examples = [], []
+      instance_eval &block
     end
 
     def run
       Spec.reporter.example_group_started self
-      instance_eval &@block
       @examples.each &:run
       @children.each &:run
     end
 
     def it(description, &block)
-      @examples << Example.new(self, description, &block)
+      example = Example.new(self, description, &block)
+      Spec.examples << example
+      @examples << example
+      example
     end
 
     alias_method :example, :it
@@ -37,7 +40,7 @@ module KoSpec
 
     def parents
       ary, parent_group = [], parent
-      while parent_group
+      while parent_group && Spec != parent_group
         ary.unshift parent_group
         parent_group = parent_group.parent
       end
@@ -45,7 +48,7 @@ module KoSpec
     end
 
     def position
-      parents.size - 1
+      parents.size
     end
   end
 end

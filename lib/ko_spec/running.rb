@@ -3,10 +3,10 @@ module KoSpec
     include ExampleGroup::DSL
     include Hooks::DSL
 
-    attr_reader :example_groups, :reporter
+    attr_reader :example_groups, :examples, :reporter
 
     def initialize
-      @example_groups, @reporter = [], Reporter.new
+      @example_groups, @examples, @reporter, @threading = [], [], Reporter.new, Threading.new
     end
 
     def start
@@ -14,9 +14,12 @@ module KoSpec
         load File.expand_path(file_path)
       end
 
-      example_groups.each &:run
+      examples.each do |example|
+        @threading.queue << example
+      end
+      @threading.setup_workers
+      @threading.run_examples
+      @reporter.work
     end
-
-    def parent() nil end
   end
 end

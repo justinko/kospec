@@ -8,6 +8,7 @@ require 'ko_spec/example'
 require 'ko_spec/example_group'
 require 'ko_spec/reporter'
 require 'ko_spec/running'
+require 'ko_spec/threading'
 
 module KoSpec
   def self.running

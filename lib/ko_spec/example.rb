@@ -12,7 +12,8 @@ module KoSpec
     def run
       Spec.reporter.example_started self
       @group.parents.push(@group).each do |group|
-        group.hooks.run(:before, self)
+        Spec.reporter.example_group_started group
+        group.hooks.run :before, self
       end
       instance_eval &@block
       mocks.verify

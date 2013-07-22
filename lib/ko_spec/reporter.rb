@@ -1,15 +1,29 @@
 module KoSpec
   class Reporter
+    def initialize
+      @queue = Queue.new
+    end
+
+    def work
+      @workers = 2.times.map do
+        Thread.new do
+          puts @queue.size
+          puts @queue.pop until @queue.empty?
+        end
+      end
+      @workers.each &:join
+    end
+
     def example_group_started(example_group)
-      puts '  ' * example_group.position + example_group.description
+      @queue << '  ' * example_group.position + example_group.description
     end
 
     def example_started(example)
-      puts '  ' * example.position + example.description
+      @queue << '  ' * example.position + example.description
     end
 
     def matcher_passed(matcher)
-      puts '  ' * matcher.position + matcher.message
+      @queue << '  ' * matcher.position + matcher.message
     end
 
     def matcher_failed(matcher)
