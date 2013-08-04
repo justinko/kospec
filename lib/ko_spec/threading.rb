@@ -9,17 +9,13 @@ module KoSpec
     end
 
     def setup_workers
-      @workers = 2.times.map { Thread.new { work } }
+      @workers = 5.times.map do
+        Thread.new { @queue.pop.run until @queue.empty? }
+      end
     end
-
-    def run_examples
-      @workers.each &:join
-    end
-
-    private
 
     def work
-      @queue.pop.run until @queue.empty?
+      @workers.each &:join
     end
   end
 end

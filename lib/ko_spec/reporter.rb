@@ -1,29 +1,23 @@
+require 'delegate'
+
 module KoSpec
   class Reporter
-    def initialize
-      @queue = Queue.new
-    end
-
-    def work
-      @workers = 2.times.map do
-        Thread.new do
-          puts @queue.size
-          puts @queue.pop until @queue.empty?
-        end
+    class Message < SimpleDelegator
+      def run
+        print self + "\n"
       end
-      @workers.each &:join
     end
 
     def example_group_started(example_group)
-      @queue << '  ' * example_group.position + example_group.description
+      message '  ' * example_group.position + example_group.description
     end
 
     def example_started(example)
-      @queue << '  ' * example.position + example.description
+      message '  ' * example.position + example.description
     end
 
     def matcher_passed(matcher)
-      @queue << '  ' * matcher.position + matcher.message
+      message '  ' * matcher.position + matcher.message
     end
 
     def matcher_failed(matcher)
@@ -42,6 +36,12 @@ module KoSpec
       puts "****** Mock failed: `#{mock.message}` not called on #{mock.receiver} ******"
       puts mock.location
       puts
+    end
+
+    private
+
+    def message(str)
+      Spec.work << Message.new(str)
     end
   end
 end
