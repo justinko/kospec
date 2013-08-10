@@ -7,6 +7,7 @@ module KoSpec
 
     def initialize(group, description, &block)
       @group, @description, @block = group, description, block
+      @expectations = []
     end
 
     def run
@@ -30,6 +31,7 @@ module KoSpec
       expectation.args = args
       expectation.block = block
       expectation.run
+      @expectations << expectation
       expectation
     end
 
@@ -42,6 +44,7 @@ module KoSpec
       expectation.args = args
       expectation.block = block
       expectation.run
+      @expectations << expectation
       expectation
     end
 
@@ -60,7 +63,14 @@ module KoSpec
 
       def run
         matchers = args.grep(Matcher)
-        matchers << truthy if matchers.empty?
+
+        if matchers.empty?
+          if args.size > 1
+            matchers << eq(args.pop)
+          else
+            matchers << truthy unless args.all? {|arg| Proc === arg }
+          end
+        end
 
         matchers.each do |matcher|
           matcher.handler = handler_name

@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = KoSpec::VERSION
   spec.authors       = ["Justin Ko"]
   spec.email         = ["jko170@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = 'Ruby Testing Framework'
+  spec.summary       = 'Ruby Testing Framework'
   spec.homepage      = ""
   spec.license       = "MIT"
 

@@ -22,7 +22,7 @@ module KoSpec
 
     def matcher_failed(matcher)
       puts
-      puts "********** #{matcher.failure_message} **********"
+      puts "********** Matcher failed: #{matcher.failure_message} **********"
       puts matcher.location
       puts
     end

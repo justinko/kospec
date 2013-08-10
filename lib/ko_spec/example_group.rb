@@ -13,7 +13,7 @@ module KoSpec
     include DSL
     include Hooks::DSL
 
-    attr_reader :parent, :children, :description
+    attr_reader :parent, :children
     alias_method :example_groups, :children
 
     def initialize(parent, description, &block)
@@ -49,6 +49,10 @@ module KoSpec
 
     def position
       parents.size
+    end
+
+    def description
+      @description.to_s
     end
   end
 end

@@ -6,7 +6,11 @@ module KoSpec
     attr_reader :example_groups, :examples, :reporter
 
     def initialize
-      @example_groups, @examples, @reporter, @threading = [], [], Reporter.new, Threading.new
+      @example_groups, @examples = [], []
+      @reporter, @threading = Reporter.new, Threading.new
+
+      # will need to go in a "config" oject
+      $LOAD_PATH.unshift('spec') unless $LOAD_PATH.include?('spec')
     end
 
     def work
