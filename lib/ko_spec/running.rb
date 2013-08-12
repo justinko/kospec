@@ -13,6 +13,13 @@ module KoSpec
       $LOAD_PATH.unshift('spec') unless $LOAD_PATH.include?('spec')
     end
 
+    def describe(*)
+      example_group = super
+      example_group.location = caller.first
+      example_group.parent = nil
+      example_group
+    end
+
     def work
       @threading.queue
     end
@@ -21,7 +28,9 @@ module KoSpec
       Dir["spec/{#{'**/*_spec.rb'}}"].sort.each do |file_path|
         load File.expand_path(file_path)
       end
-
+      example_groups.each do |example_group|
+        example_group.instance_eval &example_group.block
+      end
       examples.each {|example| work << example }
       @threading.setup_workers
       @threading.work

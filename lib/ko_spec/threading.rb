@@ -9,7 +9,7 @@ module KoSpec
     end
 
     def setup_workers
-      @workers = 5.times.map do
+      @workers = 2.times.map do
         Thread.new { @queue.pop.run until @queue.empty? }
       end
     end

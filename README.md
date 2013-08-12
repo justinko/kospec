@@ -11,6 +11,7 @@ A Ruby Testing Framework
 * Option to fail-fast or not (per example, à la Jasmine)
 * Power of the matcher!
 * Concurrency by default
+* True/Real randomization
 
 ## Installation
 

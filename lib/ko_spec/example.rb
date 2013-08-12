@@ -3,25 +3,33 @@ module KoSpec
     include Matchers
     include Mocking::DSL
 
-    attr_reader :description
+    attr_accessor :example_group, :description, :location, :block
 
-    def initialize(group, description, &block)
-      @group, @description, @block = group, description, block
+    def initialize
       @expectations = []
     end
 
     def run
       Spec.reporter.example_started self
-      @group.parents.push(@group).each do |group|
-        Spec.reporter.example_group_started group
-        group.hooks.run :before, self
+      example_groups.each do |example_group|
+        Spec.reporter.example_group_started example_group
+        example_group.hooks.run :before, self
       end
       instance_eval &@block
       mocks.verify
+      Spec.reporter.example_finished self
+    end
+
+    def root_example_group
+      example_groups.find &:root?
+    end
+
+    def example_groups
+      @example_group.ancestors + [@example_group]
     end
 
     def position
-      @group.position.next
+      @example_group.position.next
     end
 
     def assert(*args, &block)
