@@ -14,7 +14,7 @@ module KoSpec
       end
 
       def for_display(example_group)
-        @messages[example_group].uniq(&:location).sort_by(&:line_number).join("\n")
+        @messages[example_group].uniq(&:location).sort.join("\n")
       end
 
       def add_example_group(example_group)
@@ -26,12 +26,16 @@ module KoSpec
       end
 
       class Message < SimpleDelegator
+        def line_number
+          Integer location.split(':')[1]
+        end
+
         def to_s
           '  ' * position + description
         end
 
-        def line_number
-          Integer location.split(':')[1]
+        def <=>(other)
+          line_number <=> other.line_number
         end
       end
     end

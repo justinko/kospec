@@ -12,7 +12,6 @@ Spec.describe 'example groups' do
       before { @foo = true }
 
       it 'works' do
-        sleep 1
         assert @foo
       end
 
@@ -20,7 +19,6 @@ Spec.describe 'example groups' do
         before { @bar = false }
 
         it 'works' do
-          sleep 2
           assert @foo
           refute @bar
         end
