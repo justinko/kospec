@@ -1,3 +1,4 @@
 #!/usr/bin/env ruby
 require 'ko_spec'
+Spec.options = ARGV
 Spec.start

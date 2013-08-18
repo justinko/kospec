@@ -3,14 +3,21 @@ module KoSpec
     include ExampleGroup::DSL
     include Hooks::DSL
 
-    attr_reader :example_groups, :examples, :reporter
+    attr_reader :example_groups, :examples, :reporter, :configuration, :mutex
+    alias_method :config, :configuration
 
     def initialize
       @example_groups, @examples = [], []
       @reporter, @threading = Reporter.new, Threading.new
+      @configuration = Configuration.new
+      @mutex = Mutex.new
 
       # will need to go in a "config" oject
       $LOAD_PATH.unshift('spec') unless $LOAD_PATH.include?('spec')
+    end
+
+    def options=(options)
+      OptionParser.new(options).parse
     end
 
     def describe(*)
@@ -25,9 +32,7 @@ module KoSpec
     end
 
     def start
-      Dir["spec/{#{'**/*_spec.rb'}}"].sort.each do |file_path|
-        load File.expand_path(file_path)
-      end
+      config.file_paths.each {|file_path| load file_path }
       example_groups.each do |example_group|
         example_group.instance_eval &example_group.block
       end

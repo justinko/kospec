@@ -13,12 +13,12 @@ module KoSpec
         @messages = Hash.new {|h, k| h[k] = []}
       end
 
-      def for_display(example)
-        @messages[example.root_example_group].uniq(&:location).join("\n")
+      def for_display(example_group)
+        @messages[example_group].uniq(&:location).sort_by(&:line_number).join("\n")
       end
 
       def add_example_group(example_group)
-        @messages[example_group.root || example_group] << Message.new(example_group)
+        @messages[example_group.root] << Message.new(example_group)
       end
 
       def add_example(example)
@@ -28,6 +28,10 @@ module KoSpec
       class Message < SimpleDelegator
         def to_s
           '  ' * position + description
+        end
+
+        def line_number
+          Integer location.split(':')[1]
         end
       end
     end
@@ -41,9 +45,8 @@ module KoSpec
         @counter[example_group] += 1
       end
 
-      def at_limit?(example)
-        @counter[example.root_example_group] ==
-          example.root_example_group.all_examples.size
+      def at_limit?(example_group)
+        @counter[example_group] == example_group.all_examples.size
       end
     end
 
@@ -53,7 +56,6 @@ module KoSpec
 
     def example_group_started(example_group)
       @messages.add_example_group example_group
-      @counter.increment example_group if example_group.root?
     end
 
     def example_started(example)
@@ -61,7 +63,13 @@ module KoSpec
 
     def example_finished(example)
       @messages.add_example example
-      output @messages.for_display(example) if @counter.at_limit?(example)
+      example_group = example.root_example_group
+      @counter.increment example_group
+      Spec.mutex.synchronize do
+        if @counter.at_limit?(example_group)
+          output @messages.for_display(example_group)
+        end
+      end
     end
 
     def matcher_passed(matcher)

@@ -1,5 +1,3 @@
-require 'thread'
-
 module KoSpec
   class Threading
     attr_reader :queue
@@ -9,7 +7,7 @@ module KoSpec
     end
 
     def setup_workers
-      @workers = 2.times.map do
+      @workers = Spec.config.concurrency.times.map do
         Thread.new { @queue.pop.run until @queue.empty? }
       end
     end

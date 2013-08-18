@@ -38,8 +38,12 @@ module KoSpec
     alias_method :specify, :it
 
     def ancestors
-      return [] unless parent
-      [parent, parent.ancestors].flatten
+      _ancestors, _parent = [], parent
+      while _parent
+        _ancestors.unshift _parent
+        _parent = _parent.parent
+      end
+      _ancestors
     end
 
     def descendants
@@ -51,7 +55,7 @@ module KoSpec
     end
 
     def root
-      ancestors.find &:root?
+      ancestors.find(&:root?) || self
     end
 
     def all_examples
