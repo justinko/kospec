@@ -101,7 +101,7 @@ module KoSpec
     private
 
     def output(str)
-      Spec.work << Output.new(str)
+      Spec.workers.jobs << Output.new(str)
     end
   end
 end

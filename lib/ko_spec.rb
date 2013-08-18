@@ -11,7 +11,7 @@ require 'ko_spec/example_group'
 require 'ko_spec/option_parser'
 require 'ko_spec/reporter'
 require 'ko_spec/running'
-require 'ko_spec/threading'
+require 'ko_spec/workers'
 
 module KoSpec
   def self.running

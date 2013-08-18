@@ -1,14 +1,14 @@
 module KoSpec
-  class Threading
-    attr_reader :queue
+  class Workers
+    attr_reader :jobs
 
     def initialize
-      @queue = Queue.new
+      @jobs = Queue.new
     end
 
-    def setup_workers
+    def prepare
       @workers = Spec.config.concurrency.times.map do
-        Thread.new { @queue.pop.run until @queue.empty? }
+        Thread.new { @jobs.pop.run until @jobs.empty? }
       end
     end
 
