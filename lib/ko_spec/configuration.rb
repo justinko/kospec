@@ -1,11 +1,22 @@
 module KoSpec
   class Configuration
-    attr_accessor :concurrency, :locations, :pattern
+    attr_accessor :concurrency, :locations, :pattern, :default_path
 
     def initialize
       self.concurrency = 5
       self.pattern = '**/*_spec.rb'
+      self.default_path = 'spec'
     end
+
+    def setup_load_path
+      $LOAD_PATH.unshift(default_path) unless $LOAD_PATH.include?(default_path)
+    end
+
+    def load_spec_files
+      file_paths.each {|file_path| load file_path }
+    end
+
+    private
 
     def file_paths
       locations.map do |location|

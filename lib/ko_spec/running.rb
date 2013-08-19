@@ -12,9 +12,6 @@ module KoSpec
       @reporter = Reporter.new
       @workers = Workers.new
       @mutex = Mutex.new
-
-      # will need to go in a "config" oject
-      $LOAD_PATH.unshift('spec') unless $LOAD_PATH.include?('spec')
     end
 
     def options=(options)
@@ -29,13 +26,24 @@ module KoSpec
     end
 
     def start
-      config.file_paths.each {|file_path| load file_path }
+      config.setup_load_path
+      config.load_spec_files
+      populate_examples
+      enqueue_examples
+      workers.prepare
+      workers.work
+    end
+
+    private
+
+    def populate_examples
       example_groups.each do |example_group|
         example_group.instance_eval &example_group.block
       end
+    end
+
+    def enqueue_examples
       examples.each {|example| workers.jobs << example }
-      @workers.prepare
-      @workers.work
     end
   end
 end
